@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Daftar Karakter Free Fire</title>
+  <meta name="description" content="Daftar nama-nama karakter Free Fire lengkap dengan gambar, fitur pencarian, filter, dan halaman profil." />
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--text:#e6eef8;--accent:#3b82f6}
+    body{font-family:Inter,system-ui,Segoe UI,Arial;background:linear-gradient(180deg,#071028 0%,#0f1724 100%);color:var(--text);margin:0;padding:32px}
+    .container{max-width:1100px;margin:0 auto}
+    h1{font-size:2rem;margin:0 0 8px}
+    p.lead{margin:0 0 24px;opacity:.9}
+    .controls{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+    .controls input,.controls select{padding:8px 12px;border-radius:8px;border:none;font-size:1rem;flex:1 1 200px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+    .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 20px rgba(2,6,23,.6);text-align:center;cursor:pointer;transition:.3s}
+    .card:hover{transform:scale(1.03);background:#121c32}
+    .card img{width:100%;height:260px;object-fit:cover;border-radius:8px}
+    .name{margin-top:10px;font-weight:600}
+    .sub{font-size:.85rem;opacity:.8}
+    footer{margin-top:26px;font-size:.9rem;color:#9fb0d6;text-align:center}
+    /* Profil pop-up */
+    .profile-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);display:none;justify-content:center;align-items:center;z-index:1000}
+    .profile-card{background:var(--card);padding:20px;border-radius:16px;max-width:400px;width:90%;text-align:center;position:relative}
+    .profile-card img{width:100%;border-radius:12px;margin-bottom:12px}
+    .profile-card h2{margin:0 0 8px}
+    .profile-card p{opacity:.9}
+    .close-btn{position:absolute;top:8px;right:12px;font-size:1.5rem;cursor:pointer}
+    @media (max-width:520px){.card img{height:180px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Daftar Karakter Free Fire</h1>
+    <p class="lead">Gunakan kolom pencarian atau filter untuk menemukan karakter favorit Anda. Klik karakter untuk melihat detail profil.</p>
+
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Cari karakter..." />
+      <select id="filterRole">
+        <option value="">Semua Peran</option>
+        <option value="Support">Support</option>
+        <option value="Fighter">Fighter</option>
+        <option value="Sniper">Sniper</option>
+        <option value="Tank">Tank</option>
+      </select>
+    </div>
+
+    <div class="grid" id="characterGrid">
+      <!-- Data karakter akan dirender melalui JS -->
+    </div>
+
+    <footer>
+      rapi gnteng bgt
+    </footer>
+  </div>
+
+  <audio id="bgMusic" autoplay loop>
+    <source src="somebody.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    window.addEventListener('load', () => {
+        const bgMusic = document.getElementById('bgMusic');
+        const playAudio = () => {
+            bgMusic.play().catch(() => {});
+            document.removeEventListener('click', playAudio);
+        };
+        document.addEventListener('click', playAudio);
+    });
+  </script>
+
+  <div class="profile-overlay" id="profileOverlay">
+    <div class="profile-card">
+      <div class="close-btn" id="closeProfile">×</div>
+      <img id="profileImg" src="" alt="" />
+      <h2 id="profileName"></h2>
+      <p id="profileRole"></p>
+      <p id="profileDesc"></p>
+    </div>
+  </div>
+
+<script>
+const characters=[
+  {name:"Alok",role:"Support",desc:"Memulihkan HP dan meningkatkan kecepatan gerak untuk tim",img: "alok.jpg"},
+  {name:"Chrono",role:"Tank",desc:"Membuat perisai pelindung dan meningkatkan kecepatan gerak",img: "chrono.jpg"},
+  {name:"Hayato",role:"Fighter",desc:"Meningkatkan armor penetration saat HP menurun",img: "hayato.jpg"},
+  {name:"Kelly",role:"Fighter",desc:"Meningkatkan kecepatan berlari",img: "kelly.jpg"},
+  {name:"Kla",role:"Fighter",desc:"Serangan tangan kosong sangat kuat",img: "kla.jpg"},
+  {name:"Jota",role:"Fighter",desc:"Memulihkan HP saat membunuh musuh jarak dekat",img: "jota.jpg"},
+  {name:"Moco",role:"Support",desc:"Menandai lokasi musuh yang terkena tembakan",img: "moco.jpg"},
+  {name:"Laura",role:"Sniper",desc:"Meningkatkan akurasi saat menggunakan scope",img: "laura.jpg"},
+  {name:"Antonio",role:"Tank",desc:"Mendapat HP tambahan di awal permainan",img: "antonio.jpg"},
+  {name:"Miguel",role:"Fighter",desc:"Mendapatkan EP setiap kali membunuh musuh",img: "miguel.jpg"},
+  {name:"K",role:"Support",desc:"Menambah EP & mengubahnya jadi HP untuk tim",img: "k.jpg"},
+  {name:"ford",role:"Tank",desc:"Suka koleksi item saat kill (karakter my favorit ku jir)",img: "ford.jpg"},
+  {name:"Clu",role:"Support",desc:"Bisa mendeteksi musuh di sekitar",img: "clu.jpg"},
+  {name:"Andrew",role:"Tank",desc:"Mengurangi damage yang di terima dari peluru",img: "andrew.jpg"},
+  {name:"Kapela",role:"Support",desc:"Meningkatkan efek penyembuhan dan mengurangi damage knock",img: "kapela.jpg"},
+  {name:"Leon",role:"Fighter",desc:"Memulihkan HP setelah bertahan dari pertempuran",img: "leon.jpg"},
+  {name:"Maro",role:"Sniper",desc:"Meningkatkan damage serangan jarak jauh",img: "maro.jpg"},
+  {name:"maxim",role:"Support",desc:"Medkit super cepat",img: "maxim.jpg"},
+  {name:"Notora",role:"Support",desc:"Menambah HP rekan satu tim saat berada di kendaraan",img: "notora.jpg"},
+  {name:"Olivia",role:"Support",desc:"Memberi HP tambahan saat menghidupkan teman",img: "olivia.jpg"},
+  {name:"Rafael",role:"Sniper",desc:"Menembak secara senyap dan meneymbuhkan diri",img: "rafael.jpg"},
+  {name:"Santino",role:"Fighter/Tactical",desc:"Membuat manekin dan berpindah ke posisinya dengan cepat",img: "santino.jpg"},
+  {name:"Shirou",role:"Fighter",desc:"Menandai musuh yang menyerang dan meningkatkan damage tembakan balasan",img: "shirou.jpg"},
+  {name:"Skyler",role:"Fighter",desc:"Menghancurkan glo wall dan menyembuhkan diri",img: "skyler.jpg"},
+  {name:"Steffie",role:"Support",desc:"Membuat area perlindungan yang mengurangi damage",img: "steffie.jpg"},
+  {name:"Tatsuya",role:"Fighter/Rusher",desc:"Berlari sprint super cepat dalam waktu singkat",img: "tatsuya.jpg"},
+  {name:"Thiva",role:"Support",desc:"Mempercepat rivive teman dan menambah HP",img: "thiva.jpg"},
+  {name:"Wolfrah",role:"Sniper",desc:"Damage dari headsot berkurang, damage ke musuh meningkat saat kill bertambah",img: "wolfrah.jpg"},
+  {name:"Xayne",role:"Tank",desc:"Menambah HP sementara dan lebih kuat lawan glo wall",img: "xayne.jpg"},
+  {name:"Karolin",role:"Support",desc:"Berlari cepat saat memakai shotgun",img: "karolin.jpg"}
+];
+
+const grid=document.getElementById('characterGrid');
+const searchInput=document.getElementById('searchInput');
+const filterRole=document.getElementById('filterRole');
+const overlay=document.getElementById('profileOverlay');
+const closeBtn=document.getElementById('closeProfile');
+const profileImg=document.getElementById('profileImg');
+const profileName=document.getElementById('profileName');
+const profileRole=document.getElementById('profileRole');
+const profileDesc=document.getElementById('profileDesc');
+
+function renderCharacters(){
+  const search=searchInput.value.toLowerCase();
+  const role=filterRole.value;
+  grid.innerHTML='';
+  characters
+    .filter(c=>c.name.toLowerCase().includes(search))
+    .filter(c=>!role || c.role===role)
+    .forEach(c=>{
+      const card=document.createElement('div');
+      card.className='card';
+      card.innerHTML=`<img src="${c.img}" alt="${c.name}"><div class="name">${c.name}</div><div class="sub">${c.role}</div>`;
+      card.addEventListener('click',()=>openProfile(c));
+      grid.appendChild(card);
+    });
+}
+
+function openProfile(char){
+  profileImg.src=char.img;
+  profileName.textContent=char.name;
+  profileRole.textContent=char.role;
+  profileDesc.textContent=char.desc;
+  overlay.style.display='flex';
+}
+
+closeBtn.addEventListener('click',()=>{
+  overlay.style.display='none';
+});
+
+searchInput.addEventListener('input',renderCharacters);
+filterRole.addEventListener('change',renderCharacters);
+
+renderCharacters();
+</script>
+</body>
+</html>
